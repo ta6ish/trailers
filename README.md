@@ -42,3 +42,8 @@ docker container run -e TMDB_API_KEY='somekey' -p 3000:3000 -d trailerapp
 - Http response codes from the viaplay content service can be forwarded.
 - Implementation of Circuit Breaker can help, however timeout has been added to HTTP services.
 - Cache trailers by the imdb ID to improve service response and depedent service downtime.
+
+## Add more services
+- Create a new service by extending `lib/services/base-trailer.js` and implementing the `getTrailer` method.
+- Update `lib/helpers/get-trailer.js` Factory method to provide new service to controller.
+- Update `config/app.js` to swtich service.
