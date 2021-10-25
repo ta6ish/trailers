@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "API for serving trailers",
     "main": "index.js",
+    "engines": {
+        "node": ">=14.0.0"
+      },
     "scripts": {
         "test": "jest --coverage --detectOpenHandles",
         "lint": "eslint . --ext .js",

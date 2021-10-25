@@ -1,6 +1,12 @@
 # Trailers
 An Express.js application for serving the trailers.
 
+# Demo
+App has been deployed on Heroku. `https://ta6ish-trailers.herokuapp.com/api/trailer`
+```bash
+curl --request GET 'https://ta6ish-trailers.herokuapp.com/api/trailer?url=https://content.viaplay.se/pc-se/film/everest-2015'
+```
+
 ## Pre-reqs
 To run this app locally you will need:
 - [Node.js](https://nodejs.org/en/)

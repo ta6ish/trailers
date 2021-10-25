@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { TMDBApi } = require('../../../lib/providers');
 const { TMDBTrailers } = require('../../../lib/services');
 const videosMockData = require('../../data/tmdb-videos');

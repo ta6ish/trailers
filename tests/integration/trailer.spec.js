@@ -9,6 +9,8 @@ const baseUrl = '/api/trailer';
 
 describe(`Trailer controller`, () => {
     let api;
+    let tmdbServicenNock = nock('https://api.themoviedb.org');
+    const url = 'https://content.viaplay.se/pc-se/film/arrival-2016';
     const imdbId = 'test';
     const filResponse = _.set(
         {},
@@ -34,12 +36,7 @@ describe(`Trailer controller`, () => {
         });
 
         it('[400] Validates url', async () => {
-            const { body } = await api
-                .get(baseUrl)
-                .query({
-                    url: 'https://someinvalidurl.com/unknown/film/2334',
-                })
-                .expect(400);
+            const { body } = await api.get(baseUrl).query({ url: 'https://someotherurl.com' }).expect(400);
             const { code, message } = body;
             expect(code).toBe(2);
             expect(message).toBe(
@@ -47,35 +44,37 @@ describe(`Trailer controller`, () => {
             );
         });
 
+        it('[404] Trailer not found', async () => {
+            tmdbServicenNock
+                .get(`/3/movie/${imdbId}/videos`)
+                .query({ api_key: getConfig('tmdbApiKey') })
+                .reply(500, { message: 'failed' });
+
+            const { body } = await api.get(baseUrl).query({ url }).expect(404);
+            const { code, message } = body;
+            expect(code).toBe(2);
+            expect(message).toBe('Trailer not found');
+        });
+
         it('[500] Trailer not found from API', async () => {
-            nock('https://api.themoviedb.org')
+            tmdbServicenNock
                 .get(`/3/movie/${imdbId}/videos`)
                 .query({ api_key: getConfig('tmdbApiKey') })
                 .reply(200, { results: [] });
 
-            const { body } = await api
-                .get(baseUrl)
-                .query({
-                    url: 'https://content.viaplay.se/pc-se/film/arrival-2016',
-                })
-                .expect(500);
+            const { body } = await api.get(baseUrl).query({ url }).expect(500);
             const { code, message } = body;
             expect(code).toBe(2);
             expect(message).toBe('Failed to get trailer from service');
         });
 
         it('[200] Gets trailer url', async () => {
-            nock('https://api.themoviedb.org')
+            tmdbServicenNock
                 .get(`/3/movie/${imdbId}/videos`)
                 .query({ api_key: getConfig('tmdbApiKey') })
                 .reply(200, { results: tmdbVideos });
 
-            const { body } = await api
-                .get(baseUrl)
-                .query({
-                    url: 'https://content.viaplay.se/pc-se/film/arrival-2016',
-                })
-                .expect(200);
+            const { body } = await api.get(baseUrl).query({ url }).expect(200);
             const { code, data } = body;
             expect(code).toBe(1);
             expect(data).toHaveProperty('trailerUrl');
