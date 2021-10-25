@@ -77,7 +77,7 @@ describe(`Trailer controller`, () => {
             const { body } = await api.get(baseUrl).query({ url }).expect(200);
             const { code, data } = body;
             expect(code).toBe(1);
-            expect(data).toHaveProperty('trailerUrl');
+            expect(data).toHaveProperty('url');
         });
     });
 });

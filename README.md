@@ -26,7 +26,7 @@ curl --request GET 'http://localhost:3000/api/trailer?url=https://content.viapla
 * `code` 1 means success
 * `data` API response data
 ```javascript
-{"code":1,"data":{"trailerUrl":"https://www.youtube.com/watch?v=5CKZwKpV06U","type":"trailer"}}
+{"code":1,"data":{"url":"https://www.youtube.com/watch?v=5CKZwKpV06U","type":"trailer"}}
 ```
 
 ## Tests
